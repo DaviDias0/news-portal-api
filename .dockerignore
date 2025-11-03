@@ -1,0 +1,11 @@
+# Ignora a pasta de módulos do Node (será instalada no container)
+node_modules
+
+# Ignora logs de debug
+npm-debug.log
+
+# Ignora o ficheiro de variáveis de ambiente
+.env
+
+# Ignora a pasta de uploads (não queremos que ela vá para a imagem)
+uploads

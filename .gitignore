@@ -1,0 +1,12 @@
+# Ficheiros do Node
+node_modules/
+npm-debug.log
+
+# Ficheiros de Ambiente (NUNCA ENVIE SENHAS!)
+.env
+
+# Ficheiros de Upload (Imagens dos usuários/notícias)
+uploads/
+
+# Dados do Banco de Dados Docker (se a pasta for criada aqui)
+postgres_data/

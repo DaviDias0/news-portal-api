@@ -1,0 +1,37 @@
+# docker-compose.yml (Versão de Desenvolvimento Restaurada)
+
+services:
+  # 1. Serviço da API
+  api:
+    build: .
+    ports:
+      - "3001:3000" # API (Frontend acede no 3001)
+      - "5555:5555" # Prisma Studio
+    
+    # Espelha os nossos ficheiros locais para o container (para o nodemon)
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./prisma:/usr/src/app/prisma
+    
+    env_file:
+      - .env 
+    depends_on:
+      - db 
+    
+    # Usa o nodemon para reiniciar automaticamente
+    command: npm run dev 
+
+  # 2. Serviço do Banco de Dados
+  db:
+    image: postgres:14-alpine
+    ports:
+      - "5433:5432" # Banco de Dados (só para debug)
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+
+volumes:
+  postgres_data:
