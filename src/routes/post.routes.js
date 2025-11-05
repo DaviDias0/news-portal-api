@@ -14,15 +14,22 @@ const router = Router();
 // GET /posts
 router.get('/', PostController.getAll);
 
-// (NOVA) Rota de Busca (TEM DE VIR ANTES de /:id)
+// (NOVA) Rota de Busca
 // GET /posts/search?q=termo
 router.get('/search', PostController.search);
+
+// --- 🚀 NOVA ROTA DE CATEGORIA ---
+// Deve vir ANTES de '/:id'
+// GET /posts/category/tecnologia
+router.get('/category/:categoryName', PostController.getByCategory);
+// --- FIM DA NOVA ROTA ---
+
 
 // --- ROTAS DE COMENTÁRIOS (Têm de vir antes de /:id) ---
 router.get('/:postId/comments', CommentController.getAllByPostId);
 router.post('/:postId/comments', authMiddleware, CommentController.create);
 
-// --- ROTAS GENÉRICAS DE POST (Têm de vir depois de /search) ---
+// --- ROTAS GENÉRICAS DE POST (Têm de vir depois de /search e /category) ---
 // GET /posts/:id (Buscar um post específico)
 router.get('/:id', PostController.getOne);
 
@@ -33,16 +40,16 @@ router.use(adminMiddleware);
 
 // POST /posts (Criar)
 router.post(
-  '/',
-  upload.single('coverImage'),
-  PostController.create
+  '/',
+  upload.single('coverImage'),
+  PostController.create
 );
 
 // PUT /posts/:id (Atualizar)
 router.put(
-  '/:id',
-  upload.single('coverImage'),
-  PostController.update
+  '/:id',
+  upload.single('coverImage'),
+  PostController.update
 );
 
 // DELETE /posts/:id (Deletar)

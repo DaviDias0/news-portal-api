@@ -1,35 +1,38 @@
-# docker-compose.yml (Versão de Desenvolvimento Restaurada)
+# docker-compose.yml (Versão Final e Corrigida)
 
 services:
   # 1. Serviço da API
   api:
     build: .
     ports:
-      - "3001:3000" # API (Frontend acede no 3001)
+      - "3001:3001" # CORRIGIDO: Mapeia 3001 (local) para 3001 (container)
       - "5555:5555" # Prisma Studio
     
-    # Espelha os nossos ficheiros locais para o container (para o nodemon)
+    # CORRIGIDO: Mapeia tudo, mas protege o node_modules
     volumes:
-      - ./src:/usr/src/app/src
-      - ./prisma:/usr/src/app/prisma
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     
     env_file:
       - .env 
     depends_on:
       - db 
-    
-    # Usa o nodemon para reiniciar automaticamente
     command: npm run dev 
 
   # 2. Serviço do Banco de Dados
   db:
-    image: postgres:14-alpine
+    image: postgres:14-alpine # Mantive a sua versão 14
     ports:
-      - "5433:5432" # Banco de Dados (só para debug)
+      - "5433:5432" # Mantive a sua porta 5433
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
+    
+    # CORRIGIDO: Adicionada a leitura do .env
+    env_file:
+      - .env
+      
     volumes:
       - postgres_data:/var/lib/postgresql/data 
 
